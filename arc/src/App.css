@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:700');
+.App {
+    overflow: hidden;
+}
+.carIcon {
+   
+    background-image: url('https://cdn4.iconfinder.com/data/icons/basic-ui-elements/700/09_location_pin-512.png');
+    background-position: center;
+    background-size: cover;
+    width:20px;
+    height:20px;
+    /*transform: translate(-50%, -50%);*/
+    position: absolute;
+}
+.fa-bars {
+    color:#FEA62F;
+    font-size: 30px;
+    margin:15px;
+    cursor: pointer;
+    transition: all .2s;
+}
+.fa-bars-outside {
+    color:#FEA62F;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    right:10px;
+    top:0px;
+}
+.fa-bars:hover {
+    color:#d6530c;
+}
+.pullOut {
+    animation: pullOut .3s ease-out forwards;
+}
+.pullIn {
+    animation: pullIn .3s ease-out forwards;
+}
+@keyframes pullOut {
+    0% {
+        transform: translateX(100%)
+    }
+    100% {
+        transform: translateX(-100%)
+    }
+}
+@keyframes pullIn {
+    0% {
+        transform: translateX(-100%)
+    }
+    100% {
+        transform: translateX(100%)
+    }
+}
+.toolTip {
+    color:white;
+  
+    z-index: 100;
+    min-height: 180px;
+    width:220px;
+    background: rgba(0,0,0,0.6);
+    padding: 10px;
+    border-radius:5px;
+    word-wrap: break-word
+}
+.toolTipWrap {
+    position: absolute;
+    z-index: 100;
+    left:0px;
+    bottom:0px;
+    display: flex;
+}
+#continueToolTip {
+    color:#42d1f4;
+}
+#rightToolTip {
+    color:#0431e5;
+}
+#leftToolTip {
+    color:#e038d7;
+}
+#mergeToolTip {
+    color:#f72222;
+}
+#splitToolTip {
+    color:#f9f345;
+}
+
+.toolTip ul {
+    list-style-type: none;
+    margin-left: -15px;
+    margin-top: 5px;
+}
+.bold {
+    font-weight:bold;
+
+}
+.mapboxgl-canvas {
+    min-height: 100vh;
+}
+.mapboxgl-map {
+    min-height: 100vh;
+}
+#controls {
+    position: fixed;
+    top:0px;
+    right:-400px;
+    min-height:100vh;
+    width:400px;
+    background-color: rgba(0,0,0,.6);
+    
+}
+.controlsInputItem::placeholder {
+    color: rgba(255,255,255,.8)
+}
+.controlsInputItem{
+    color:white;
+    font-family: 'quicksand';
+    margin: 20px;
+    margin-bottom: 0px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    width:90%;
+    height:30px;
+    font-size: 20px;
+    outline: none;
+}
+
+.inputParent {
+    width:100%;
+    min-height:40px; 
+    display: flex;
+}
+.inputsWrap {
+    min-height: 100px;
+    width:100%;
+
+}
+.searchList {
+    margin-top:20px;
+    max-height:50vh;
+    overflow-y:scroll;
+    width:110%;
+    min-height: 10px;
+    margin-bottom:20px;
+}
+.scrollBarHider {
+    width:100%;
+    min-height:10px;
+}
+.searchBtn {
+    color:#FEA62F;
+    font-size: 35px;
+    margin-right:20px;
+    margin-left:5px;
+    transition: all .3s ease-out;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.searchItem {
+    margin-left:30px;
+    color:white;
+    font-family: 'quicksand';
+    font-size: 18px;
+    cursor: pointer;
+}
+.searchItemWrap {
+    width:100%;
+    height:50px;
+    display:flex;
+    cursor: pointer;
+    align-items: center
+}
+.searchItemWrap:hover {
+    background-color: #d6530c;
+    
+}
+.searchBtn:active {
+    transform: scale(0.9);
+}
+.searchBtn:hover {
+    color:#d6530c;
+}
+.controlsTitleItem{
+    color:white;
+    font-family: 'quicksand';
+    margin-top: 30px;
+    margin-left:20px;
+}
+.controlsTitleItem > input {
+    display: none;
+}
+.fa-car{
+    color:#FEA62F;
+    font-size: 20px;
+    margin-right:10px;
+    margin-left:10px;
+    transition: all .3s ease-out;
+    cursor: pointer;
+}
+.fa-map-signs {
+    color:#FEA62F;
+    font-size: 20px;
+    margin-right:10px;
+    margin-left:10px;
+    transition: all .3s ease-out;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+.fa-map-signs:hover {
+    color:#d6530c;
+    transform: scale(1.3);
+ 
+}
+.localMapBtn {
+   color:gray;
+   pointer-events:none;
+}
+.localMapBtn:hover {
+    cursor: pointer;
+   
+}
+.flip {
+   animation: flip .2s ease-in-out;
+}
+.flipBack {
+    animation: flipBack .2s ease-in-out;
+ }
+@keyframes flip {
+    0% {
+        transform: rotateX(0deg);
+    }
+    100% {
+        transform: rotateX(90deg)
+    }
+}
+@keyframes flipBack {
+    0% {
+        transform: rotateX(90deg);
+    }
+    100% {
+        transform: rotateX(0deg)
+    }
+}
+.fa-recycle {
+    color:#FEA62F;
+    font-size: 20px;
+    margin-right:10px;
+    margin-left:10px;
+    transition: all .3s ease-out;
+    cursor: pointer;
+}
+.fa-recycle:hover {
+    color:#d6530c;
+    transform: scale(1.3);
+}
+.fa-upload {
+    color:#FEA62F;
+    font-size: 20px;
+    margin-right:10px;
+    margin-left:10px;
+    transition: all .3s ease-out;
+    cursor: pointer;
+}
+.fa-car:hover {
+    color:#d6530c;
+    transform: scale(1.3);
+}
+.fa-upload:hover {
+    color:#d6530c;
+    transform: scale(1.3);
+}
+@media (max-width:1000px){
+   
+}
