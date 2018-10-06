@@ -4,6 +4,7 @@ import ReactMapGL from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 import DeckLayers from './components/arcLayer';
 import io from 'socket.io-client';
+import * as turf from '@turf/turf';
 //import roads from './assets/pruned_extra_roads.json';
 //import testerRoads from './assets/tester.json';
 import wholeMap from './assets/i95_points.json';
@@ -31,6 +32,7 @@ class App extends Component {
       egoPoints: {},
       stopEgo:false,
       egoPosition: [],
+      egoBearing: 0,
       viewport: {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -82,7 +84,7 @@ class App extends Component {
                   //"line-opacity": 0.75,
                   "line-width": 4
               }
-          });  
+          });  /*
           this.carIcon = document.createElement('div');
           this.carIcon.classList.add('carIcon');
          
@@ -93,11 +95,13 @@ class App extends Component {
         this.car = new mapboxgl.Marker(this.carIcon)
         .setLngLat(firstPoint)
         .addTo(this.map);
-        
+        */
          
        })
       this.socket.on('sendingPoint', (point) => {
-        console.log('h')
+        if(point[1]) {
+       this.setState({egoBearing: turf.bearing(turf.point(point[0].geometry.coordinates[0]), turf.point(point[1].geometry.coordinates[0]))})
+        }
         if(this.state.stopEgo==false){
           this.egoCounter+=1;        
           this.socketIdsArr.push(point[0].id);
@@ -143,7 +147,7 @@ class App extends Component {
                 
               }
           }   
-            this.car.setLngLat(point[0].geometry.coordinates[0]);
+            //this.car.setLngLat(point[0].geometry.coordinates[0]);
 
             let promise = new Promise((resolve,reject)=>{
             let coords = this.state.egoPoints.features[0].geometry.coordinates;
@@ -251,6 +255,7 @@ class App extends Component {
        this.setState({featureObjFromArr});
    }
   componentDidMount(){ 
+   
       this.processData(wholeMap);
       window.addEventListener('resize', this._resize);
       this._resize();          
@@ -363,7 +368,8 @@ class App extends Component {
               "circle-color": "black"
               }
          });
-       })   
+       });
+       console.log(this.map.getBearing(), this.map.getPitch())   
      }
     
   componentWillUnmount() {
@@ -846,7 +852,7 @@ class App extends Component {
           onClick={this.click}
           mapboxApiAccessToken={MAPBOX_TOKEN}>
           
-          <DeckLayers egoPoints={this.state.egoPosition} viewport={this.state.viewport}/>
+          <DeckLayers egoPoints={this.state.egoPosition} egoBearing={this.state.egoBearing} viewport={this.state.viewport}/>
 
      </ReactMapGL>
      <i id="navBtn" onClick={this.pullOutOrInNav} className="fas fa-bars fa-bars-outside"></i>{/* icon that pulls nav out*/}
