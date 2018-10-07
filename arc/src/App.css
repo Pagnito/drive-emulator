@@ -12,6 +12,15 @@
     /*transform: translate(-50%, -50%);*/
     position: absolute;
 }
+#redcar {
+    height:50px !important;
+    width:25px !important;
+    background: #42d1f4;
+    z-index: 100;
+}
+#icon-layer {
+    transform: scale(10);
+}
 .fa-bars {
     color:#FEA62F;
     font-size: 30px;

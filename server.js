@@ -51,7 +51,7 @@ io.on('connection', (socket)=>{
                     i=0;
                 }
                
-            },30)
+            },50)
           
         })
         

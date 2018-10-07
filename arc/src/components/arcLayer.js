@@ -11,7 +11,7 @@ render() {
    var data = [
        { prevCoordinates: this.props.egoPoints[0],
          directionCoordinates:this.props.egoPoints[1],
-         iconBearing: -this.props.egoBearing+50-175}]
+         iconBearing: -this.props.egoBearing+55/*-175*/}]
      
                 
     
@@ -34,7 +34,7 @@ render() {
           },
           sizeScale: 20,
           getSize: d=>7,
-          getPosition: d=>d.prevCoordinates,
+          getPosition: d=>[-70.97811884489,42.61957039095],
           getIcon: d=>'marker',
           getAngle: d=> d.iconBearing
       })

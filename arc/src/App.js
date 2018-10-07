@@ -4,6 +4,7 @@ import ReactMapGL from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
 import DeckLayers from './components/arcLayer';
 import io from 'socket.io-client';
+import redCar from './assets/redCar.png';
 import * as turf from '@turf/turf';
 //import roads from './assets/pruned_extra_roads.json';
 //import testerRoads from './assets/tester.json';
@@ -31,8 +32,6 @@ class App extends Component {
       featureObjFromArr:{},
       egoPoints: {},
       stopEgo:false,
-      egoPosition: [],
-      egoBearing: 0,
       viewport: {
         width: window.innerWidth,
         height: window.innerHeight,
@@ -47,7 +46,6 @@ class App extends Component {
     ////below vars are not in state because its not async this way
     this.socketIdsArr = [];
     this.egoCounter = 0;
-    this.car = {};
     this.socket = io.connect('http://localhost:3000/');
     this.socket.on('connect', ()=>{
       this.socket.on('pretendData', (data)=>{
@@ -84,24 +82,67 @@ class App extends Component {
                   //"line-opacity": 0.75,
                   "line-width": 4
               }
-          });  /*
-          this.carIcon = document.createElement('div');
-          this.carIcon.classList.add('carIcon');
+          });  
+          this.pointForCar = {
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": firstPoint
+                }
+            }]
+        };
          
-           //carIcon.style.backgroundImage = 'url(/assets/car-icon-deckgl.png)';
-           this.carIcon.style.className = 'carIcon';
-           this.carIcon.style.backgroundSize = "cover";
-
-        this.car = new mapboxgl.Marker(this.carIcon)
-        .setLngLat(firstPoint)
-        .addTo(this.map);
-        */
-         
+          this.map.loadImage('https://upload.wikimedia.org/wikipedia/commons/9/96/RedCar.png', (error,image)=>{
+            if (error) throw error;
+              this.map.addImage('car', image);
+              this.map.addLayer({
+                "id": "point",
+                "source": {
+                  "type": "geojson",
+                  "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": firstPoint
+                         }
+                    }]
+                   }
+                },
+                "type": "symbol",
+                "layout": {
+                    "icon-image": "car",
+                    "icon-size": 0.25,
+                    "icon-rotate": ["get", "bearing"],
+                    "icon-rotation-alignment": "map",
+                    "icon-allow-overlap": true,
+                    "icon-ignore-placement": true
+                }
+            });
+           
+          })
+          
        })
+      
       this.socket.on('sendingPoint', (point) => {
-        if(point[1]) {
-       this.setState({egoBearing: turf.bearing(turf.point(point[0].geometry.coordinates[0]), turf.point(point[1].geometry.coordinates[0]))})
-        }
+        
+        
+        if(point[1]){
+          this.pointForCar.features[0].geometry.coordinates = point[0].geometry.coordinates[0];
+          this.pointForCar.features[0].properties.bearing = turf.bearing(
+            turf.point(point[0].geometry.coordinates[0]),
+            turf.point(point[1].geometry.coordinates[0])
+           )-180;
+           if(this.map.getSource('point')!== undefined){
+              this.map.getSource('point').setData(this.pointForCar);
+           }
+         }
+       
         if(this.state.stopEgo==false){
           this.egoCounter+=1;        
           this.socketIdsArr.push(point[0].id);
@@ -255,7 +296,6 @@ class App extends Component {
        this.setState({featureObjFromArr});
    }
   componentDidMount(){ 
-   
       this.processData(wholeMap);
       window.addEventListener('resize', this._resize);
       this._resize();          
@@ -369,9 +409,8 @@ class App extends Component {
               }
          });
        });
-       console.log(this.map.getBearing(), this.map.getPitch())   
-     }
-    
+    }
+ 
   componentWillUnmount() {
     window.removeEventListener('resize', this._resize);
     this.socket.disconnect();
@@ -484,7 +523,7 @@ class App extends Component {
   
   removeEgoLayer = () =>{
     if(this.egoCounter>0){
-      this.car.remove();
+      
       document.getElementById('localMapBtn').style.pointerEvents = 'none';
       document.getElementById('localMapBtn').style.color = 'gray';
       this.map.removeLayer('trace');
@@ -852,7 +891,7 @@ class App extends Component {
           onClick={this.click}
           mapboxApiAccessToken={MAPBOX_TOKEN}>
           
-          <DeckLayers egoPoints={this.state.egoPosition} egoBearing={this.state.egoBearing} viewport={this.state.viewport}/>
+          {/*<DeckLayers egoPoints={this.state.egoPosition} egoBearing={this.state.egoBearing} viewport={this.state.viewport}/>*/}
 
      </ReactMapGL>
      <i id="navBtn" onClick={this.pullOutOrInNav} className="fas fa-bars fa-bars-outside"></i>{/* icon that pulls nav out*/}
