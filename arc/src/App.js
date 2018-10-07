@@ -218,18 +218,26 @@ class App extends Component {
 /////end of constructor////////////
 
   pullOutOrInNav=()=>{
-    var navBtn = document.getElementById('navBtn');
+    let navBtn = document.getElementById('navBtn');
     if(this.state.navVisible){
       navBtn.setAttribute('style', 'display:block;')
       document.getElementById('controls').classList.remove('pullOut');   
       document.getElementById('controls').classList.add('pullIn');
       this.setState({navVisible:false})
     } else {
+      document.getElementById('findSegInput').focus();
       navBtn.setAttribute('style', 'display:none;')
       document.getElementById('controls').classList.remove('pullIn');
       document.getElementById('controls').classList.add('pullOut');
       this.setState({navVisible:true})
     }
+  }
+  mapClickCloseNav=()=>{
+       let navBtn = document.getElementById('navBtn');
+      navBtn.setAttribute('style', 'display:block;')
+      document.getElementById('controls').classList.remove('pullOut');   
+      document.getElementById('controls').classList.add('pullIn');
+      this.setState({navVisible:false})
   }
   processData = (data) => { 
     ///create segment div points///dots between segments on map////
@@ -631,6 +639,7 @@ class App extends Component {
         }
      }
   click = (info) => {
+    this.mapClickCloseNav();
     let feature = this.map.queryRenderedFeatures([info.offsetCenter.x,info.offsetCenter.y], {layers:['clickConnections']});
     if(feature.length===0){
     
@@ -901,7 +910,7 @@ class App extends Component {
           {/*//////////////////////////////////////////////////////*/}
          <div className="inputsWraps">
             <div className="inputParent"> {/* for any input use this structure of inputParent class and controlsInputItem*/ }
-               <input value={this.state.findSegId} onChange={this.onChange} className="controlsInputItem" type="text" name="findSegId" placeholder="Find a segment"/>
+               <input id="findSegInput" value={this.state.findSegId} onChange={this.onChange} className="controlsInputItem" type="text" name="findSegId" placeholder="Find a segment"/>
                <i onClick={this.findSegment} className="fas searchBtn fa-search-location"></i>
             </div>
          </div>
