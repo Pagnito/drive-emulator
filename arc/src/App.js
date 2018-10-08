@@ -447,7 +447,7 @@ class App extends Component {
       if(feature.properties.connections){
         let laneNum = feature.id.slice(-1);   
         let idNum = feature.id.slice(0,feature.id.length-1);
-        var id = idNum + '.' + laneNum
+        var id = idNum + '.' + laneNum;
       } else {
         var id = feature.id;
       }
